@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://hotelmidasreegency.railway.internal";
-// const API_URL = "http://localhost:5000";
+// const API_URL = "https://hotelmidasreegency.railway.internal";
+const API_URL = "https://hotelmidasreegency-production.up.railway.app/";
 
 export const PostApi = async (path, payload) => {
   try {
