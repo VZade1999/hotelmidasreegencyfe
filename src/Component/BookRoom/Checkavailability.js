@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux";
 import { setCheckInDate, setCheckOutDate, setRoomData } from "./../Redux/Sclice";
 import './custom.css'
 import { PostApi } from '../Api/api';
-import { useNavigate } from "react-router-dom";
+
 
 const Checkavailability = () => {
-const navigate = useNavigate()
+
 const [startDate, setStartDate] = useState(new Date());
 const [endDate, setEndDate] = useState(new Date(startDate.getTime() + 86400000));
 const dispatch = useDispatch();

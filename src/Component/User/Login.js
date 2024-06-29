@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    mobileNumber: "",
+    email: "",
     password: "",
   });
   const navigate = useNavigate();
@@ -24,11 +24,11 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { mobileNumber, password } = formData;
-    if (mobileNumber && password) {
+    const { email, password } = formData;
+    if (email && password) {
       try {
         const loginResponse = await PostApi("/login", {
-          mobileNumber: mobileNumber,
+          email: email,
           password: password,
         });
         console.log("login response", loginResponse);
@@ -44,7 +44,6 @@ const Login = () => {
       } catch (error) {
         console.log(error);
       }
-  
     } else {
       setPrimaryTitle("All fields are mandatory");
       setSecondaryTitle("Please Enter Mobile number and password");
@@ -108,14 +107,13 @@ const Login = () => {
 
               <div>
                 <input
-                  type="number"
-                  maxLength={10}
-                  name="mobileNumber"
+                  type="gmail"
+                  name="email"
                   required
-                  value={formData.mobileNumber}
+                  value={formData.email}
                   onChange={handleChange}
                   className="bg-gray-100 w-full text-sm px-4 py-3.5 rounded-md outline-blue-600"
-                  placeholder="What's App Number"
+                  placeholder="Email Address"
                 />
               </div>
               <div>

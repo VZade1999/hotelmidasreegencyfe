@@ -12,7 +12,7 @@ const Validation = (props) => {
   const navigate = useNavigate();
   const [isValid, SetIsValid]= useState(true);
   const [primaryTitle, setPrimaryTitle] = useState();
-  const { name, mobileNumber, password } = props.formData;
+  const { name, email, password } = props.formData;
   const [otp, setOtp] = useState();
 
   const handleChange = (e) => {
@@ -24,7 +24,7 @@ const Validation = (props) => {
     try {
       const responseRegister = await PostApi(`/register`, {
         name: name,
-        mobileNumber: mobileNumber,
+        email: email,
         password: password,
         otp: otp,
       });

@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 import Validation from "./validation"; // Make sure to import your Validation component
 import { PostApi } from "../Api/api";
 
-
-
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
-    mobileNumber: "",
+    email: "",
     password: "",
     rememberMe: false,
   });
@@ -27,22 +25,23 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, mobileNumber, password, rememberMe } = formData;
+    const { name, email, password, rememberMe } = formData;
 
     // Basic validation
-    if (name && mobileNumber && password && rememberMe) {
+    if (name && email && password && rememberMe) {
       // If validation passes, set isSubmitted to true to render the Validation component
       try {
         const otpResponse = await PostApi(`/generateotp`, {
-          mobileNumber: mobileNumber,
+          email: email,
         });
+        console.log(otpResponse);
         if (
-          otpResponse.loginResult.message ===
-          "Mobile number is already registered"
+          otpResponse.message ===
+          "Email address is already register"
         ) {
-          setPrimaryTitle("Mobile Number is already registered.");
+          setPrimaryTitle("Email address is already registered.");
           setSecondaryTitle(
-            "Please register with another mobile number or login"
+            "Please register with another Email address or login"
           );
           setIsRegistered(true);
           setIsSubmitted(false);
@@ -64,7 +63,6 @@ const Register = () => {
 
   return (
     <>
-    
       {!isSubmitted && (
         <div className="font-[sans-serif] text-gray-800 bg-white max-w-4xl flex items-center mx-auto md:h-screen p-4">
           <div className="grid md:grid-cols-3 items-center shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-xl overflow-hidden">
@@ -153,18 +151,15 @@ const Register = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm mb-2 block">
-                    What's App Number
-                  </label>
+                  <label className="text-sm mb-2 block">E-Mail Address</label>
                   <div className="relative flex items-center">
                     <input
-                      name="mobileNumber"
-                      type="text"
-                      maxLength={10}
+                      name="email"
+                      type="email"
                       required
                       className="bg-white border border-gray-300 w-full text-sm px-4 py-2.5 rounded-md outline-blue-500"
-                      placeholder="Enter Number"
-                      value={formData.mobileNumber}
+                      placeholder="Enter e-mail address"
+                      value={formData.email}
                       onChange={handleChange}
                     />
                     <svg
