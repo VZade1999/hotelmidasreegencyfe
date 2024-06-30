@@ -1,16 +1,16 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PostApi } from "../Api/api";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 
 const Validation = (props) => {
-  useEffect(()=>{
+  useEffect(() => {
     toast.success("OTP send");
-  },[])
-  
+  }, []);
+
   const navigate = useNavigate();
-  const [isValid, SetIsValid]= useState(true);
+  const [isValid, SetIsValid] = useState(true);
   const [primaryTitle, setPrimaryTitle] = useState();
   const { name, email, password } = props.formData;
   const [otp, setOtp] = useState();
@@ -22,23 +22,32 @@ const Validation = (props) => {
 
   const handleValidate = async () => {
     try {
-      const responseRegister = await PostApi(`/register`, {
-        name: name,
+      const validateOtpResponse = await PostApi("/validateotp", {
         email: email,
-        password: password,
         otp: otp,
       });
-      if (responseRegister.valid) {
-        navigate("/login");
-      }else{
-        setPrimaryTitle(responseRegister.message);
+      if (!validateOtpResponse.valid) {
+        setPrimaryTitle(validateOtpResponse.message);
         SetIsValid(false);
+      }
+      if (validateOtpResponse.valid) {
+        try {
+          const registerResponse = await PostApi("/register", {
+            name: name,
+            email: email,
+            password: password,
+          });
+          if (registerResponse.valid) {
+            navigate("/login");
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <>
@@ -51,7 +60,7 @@ const Validation = (props) => {
                 Account Validation
               </h4>
               <p class="text-[13px] text-white mt-2">
-                We have send OTP on you What's App Number
+                We have send OTP on you Email address
               </p>
             </div>
             <div>
@@ -68,28 +77,28 @@ const Validation = (props) => {
             <div class="mb-6">
               <h3 class="text-2xl font-bold">Validate your OTP</h3>
             </div>
-            {
-              !isValid && <div
-              class="bg-blue-100 border-t-4 border-blue-500 rounded-b text-teal-900 px-4 py-3 mb-4 shadow-md"
-              role="alert"
-            >
-              <div class="flex">
-                <div class="py-1">
-                  <svg
-                    class="fill-current h-6 w-6 text-blue-500 mr-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-bold">{primaryTitle}</p>
+            {!isValid && (
+              <div
+                class="bg-blue-100 border-t-4 border-blue-500 rounded-b text-teal-900 px-4 py-3 mb-4 shadow-md"
+                role="alert"
+              >
+                <div class="flex">
+                  <div class="py-1">
+                    <svg
+                      class="fill-current h-6 w-6 text-blue-500 mr-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-bold">{primaryTitle}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            }
-            
+            )}
+
             <div class="space-y-5">
               <div>
                 <label class="text-sm mb-2 block">OTP</label>
