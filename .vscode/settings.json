@@ -18,5 +18,6 @@
         "roomdetails",
         "Sclice",
         "validtoken"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }
