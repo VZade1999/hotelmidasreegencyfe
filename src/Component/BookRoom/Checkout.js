@@ -66,41 +66,7 @@ const Checkout = () => {
     e.preventDefault();
     if (formData.name && formData.address && formData.email && formData.phone) {
       setError(false);
-       const data = await PostApi("/roombooked", {
-                userId: "1",
-                checkInDate: checkInDate,
-                checkOutDate: checkOutDate,
-                room: room,
-                numberOfDays: differenceInDays,
-                total: total,
-                customer: formData.name,
-                email: formData.email,
-                address: formData.address,
-                phone: formData.phone,
-                onlinepayment: total - 1000 * differenceInDays,
-                payathotel: 1000 * differenceInDays,
-
-              });
-      // try {
-      //   const paymentResponse = await PostApi("/roombooking", {
-      //     total: total - 1000,
-      //   });
-      //   if (!paymentResponse.data) {
-      //     navigate("/login");
-      //   }
-      //   if (paymentResponse.data.orderDetails.status === "created") {
-      //     var option = {
-      //       key: "rzp_live_miuq50dflMActu",
-      //       amount: total * 100,
-      //       currency: "INR",
-      //       name: "Hotel Midas Reegency",
-      //       description: "Test Transaction",
-      //       image:
-      //         "http://localhost:3000/static/media/logo.509352b434500fd83abe.jpg",
-      //       order_id: paymentResponse.data.orderDetails.id,
-      //       handler: async function (response) {
-      //         alert("Payment successful");
-      //         const data = await PostApi("/roombooked", {
+      //  const data = await PostApi("/roombooked", {
       //           userId: "1",
       //           checkInDate: checkInDate,
       //           checkOutDate: checkOutDate,
@@ -111,34 +77,68 @@ const Checkout = () => {
       //           email: formData.email,
       //           address: formData.address,
       //           phone: formData.phone,
+      //           onlinepayment: total - 1000 * differenceInDays,
+      //           payathotel: 1000 * differenceInDays,
+
       //         });
-      //         alert(response.razorpay_payment_id);
-      //         alert(response.razorpay_order_id);
-      //         alert(response.razorpay_signature);
-      //       },
-      //       modal: {
-      //         ondismiss: function () {
-      //           alert("Payment was not completed, please try again.");
-      //         },
-      //       },
-      //       prefill: {
-      //         name: "Hotel Midas Reegency",
-      //         email: "midasreegency1131@gmail.com",
-      //         contact: "918788233054",
-      //       },
-      //       notes: {
-      //         address: "Razorpay Corporate Office",
-      //       },
-      //       theme: {
-      //         color: "#050C9C",
-      //       },
-      //     };
-      //     const rzp = new window.Razorpay(option);
-      //     rzp.open();
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        const paymentResponse = await PostApi("/roombooking", {
+          total: total - 1000,
+        });
+        if (!paymentResponse.data) {
+          navigate("/login");
+        }
+        if (paymentResponse.data.orderDetails.status === "created") {
+          var option = {
+            key: "rzp_live_miuq50dflMActu",
+            amount: total * 100,
+            currency: "INR",
+            name: "Hotel Midas Reegency",
+            description: "Test Transaction",
+            image:
+              "http://localhost:3000/static/media/logo.509352b434500fd83abe.jpg",
+            order_id: paymentResponse.data.orderDetails.id,
+            handler: async function (response) {
+              alert("Payment successful");
+              const data = await PostApi("/roombooked", {
+                userId: "1",
+                checkInDate: checkInDate,
+                checkOutDate: checkOutDate,
+                room: room,
+                numberOfDays: differenceInDays,
+                total: total,
+                customer: formData.name,
+                email: formData.email,
+                address: formData.address,
+                phone: formData.phone,
+              });
+              alert(response.razorpay_payment_id);
+              alert(response.razorpay_order_id);
+              alert(response.razorpay_signature);
+            },
+            modal: {
+              ondismiss: function () {
+                alert("Payment was not completed, please try again.");
+              },
+            },
+            prefill: {
+              name: "Hotel Midas Reegency",
+              email: "midasreegency1131@gmail.com",
+              contact: "918788233054",
+            },
+            notes: {
+              address: "Razorpay Corporate Office",
+            },
+            theme: {
+              color: "#050C9C",
+            },
+          };
+          const rzp = new window.Razorpay(option);
+          rzp.open();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setError(true);
     }
