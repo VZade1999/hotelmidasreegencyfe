@@ -18,17 +18,14 @@ const Roomdata = (props) => {
         const isTokenValid = PostApi("/validtoken", {
           Token: Bearer,
         });
-        console.log(isTokenValid);
         if (isTokenValid) {
           dispatch(roomId(props.id));
           navigate("/bookroom/checkout");
         } else {
-          console.log("this");
           navigate("/login");
         }
       } catch (error) {}
     } else {
-      console.log("this");
       navigate("/login");
     }
   };

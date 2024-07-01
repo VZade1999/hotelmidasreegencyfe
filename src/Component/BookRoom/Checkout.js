@@ -8,7 +8,7 @@ const Checkout = () => {
   const roomData = useSelector((state) => state.roomdata.roomData);
   const roomId = useSelector((state) => state.roomdata.roomId);
   const room = roomData.find((room) => room.roomId === roomId.roomId);
-  const [error, setError]= useState(false);
+  const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,7 +17,6 @@ const Checkout = () => {
   });
   const tax = 199;
   const totalofRoom = room.price + tax;
-  console.log("room data", room);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -57,19 +56,51 @@ const Checkout = () => {
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
   const total = totalofRoom * differenceInDays;
 
-  const handleChange = (e)=>{
+  const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    setFormData({...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-   const handlePayment = async (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
-    if(formData.name && formData.address && formData.email && formData.phone){
-      setError(false)
-      //  const data = await PostApi("/roombooked", {
+    if (formData.name && formData.address && formData.email && formData.phone) {
+      setError(false);
+       const data = await PostApi("/roombooked", {
+                userId: "1",
+                checkInDate: checkInDate,
+                checkOutDate: checkOutDate,
+                room: room,
+                numberOfDays: differenceInDays,
+                total: total,
+                customer: formData.name,
+                email: formData.email,
+                address: formData.address,
+                phone: formData.phone,
+                onlinepayment: total - 1000 * differenceInDays,
+                payathotel: 1000 * differenceInDays,
+
+              });
+      // try {
+      //   const paymentResponse = await PostApi("/roombooking", {
+      //     total: total - 1000,
+      //   });
+      //   if (!paymentResponse.data) {
+      //     navigate("/login");
+      //   }
+      //   if (paymentResponse.data.orderDetails.status === "created") {
+      //     var option = {
+      //       key: "rzp_live_miuq50dflMActu",
+      //       amount: total * 100,
+      //       currency: "INR",
+      //       name: "Hotel Midas Reegency",
+      //       description: "Test Transaction",
+      //       image:
+      //         "http://localhost:3000/static/media/logo.509352b434500fd83abe.jpg",
+      //       order_id: paymentResponse.data.orderDetails.id,
+      //       handler: async function (response) {
+      //         alert("Payment successful");
+      //         const data = await PostApi("/roombooked", {
       //           userId: "1",
       //           checkInDate: checkInDate,
       //           checkOutDate: checkOutDate,
@@ -79,73 +110,38 @@ const Checkout = () => {
       //           customer: formData.name,
       //           email: formData.email,
       //           address: formData.address,
-      //           phone: formData.phone
+      //           phone: formData.phone,
       //         });
-      //         console.log('checking',data);
-      try {
-        const paymentResponse = await PostApi("/roombooking", {
-          total: "1",
-        });
-        if (!paymentResponse.data) {
-          navigate("/login");
-        }
-        if (paymentResponse.data.orderDetails.status === "created") {
-          var option = {
-            key: "rzp_live_miuq50dflMActu",
-            amount: total * 100,
-            currency: "INR",
-            name: "Hotel Midas Reegency",
-            description: "Test Transaction",
-            image:
-              "http://localhost:3000/static/media/logo.509352b434500fd83abe.jpg",
-            order_id: paymentResponse.data.orderDetails.id,
-            handler: async function (response) {
-              alert("Payment successful");
-              const data = await PostApi("/roombooked", {
-           userId: "1",
-                checkInDate: checkInDate,
-                checkOutDate: checkOutDate,
-                room: room,
-                numberOfDays: differenceInDays,
-                total: total,
-                customer: formData.name,
-                email: formData.email,
-                address: formData.address,
-                phone: formData.phone
-              });
-              console.log("booked", data);
-              alert(response.razorpay_payment_id);
-              alert(response.razorpay_order_id);
-              alert(response.razorpay_signature);
-            },
-            modal: {
-              ondismiss: function () {
-                alert("Payment was not completed, please try again.");
-              },
-            },
-            prefill: {
-              name: "Hotel Midas Reegency",
-              email: "midasreegency1131@gmail.com",
-              contact: "918788233054",
-            },
-            notes: {
-              address: "Razorpay Corporate Office",
-            },
-            theme: {
-              color: "#050C9C",
-            },
-          };
-          const rzp = new window.Razorpay(option);
-          console.log("rzp", rzp);
-          rzp.open();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }else{
-      setError(true)
+      //         alert(response.razorpay_payment_id);
+      //         alert(response.razorpay_order_id);
+      //         alert(response.razorpay_signature);
+      //       },
+      //       modal: {
+      //         ondismiss: function () {
+      //           alert("Payment was not completed, please try again.");
+      //         },
+      //       },
+      //       prefill: {
+      //         name: "Hotel Midas Reegency",
+      //         email: "midasreegency1131@gmail.com",
+      //         contact: "918788233054",
+      //       },
+      //       notes: {
+      //         address: "Razorpay Corporate Office",
+      //       },
+      //       theme: {
+      //         color: "#050C9C",
+      //       },
+      //     };
+      //     const rzp = new window.Razorpay(option);
+      //     rzp.open();
+      //   }
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    } else {
+      setError(true);
     }
-    
   };
 
   return (
@@ -226,12 +222,16 @@ const Checkout = () => {
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Room Booking
                 </h2>
-                {
-                  error && ( <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                    <span class="font-medium">Danger alert!</span> Change a few things up and try submitting again.
-                  </div>) 
-                }
-               
+                {error && (
+                  <div
+                    className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert"
+                  >
+                    <span class="font-medium">Required!</span> All below fields
+                    are required.
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <label
@@ -358,12 +358,7 @@ const Checkout = () => {
                       Rs {room.price} .00
                     </dd>
                   </dl>
-                  <dl className="flex items-center justify-between gap-4 py-3">
-                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Savings
-                    </dt>
-                    <dd className="text-base font-medium text-green-500">0</dd>
-                  </dl>
+
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                       Number of Days
@@ -374,18 +369,28 @@ const Checkout = () => {
                   </dl>
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Tax
+                      Total
+                    </dt>
+                    <dd className="text-base font-medium text-white">
+                      {total}
+                    </dd>
+                  </dl>
+                  <dl className="flex items-center justify-between gap-4 py-3">
+                    <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                      Amount to pay at hotel
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      Rs {tax}
+                      Rs {1000 * differenceInDays}
                     </dd>
                   </dl>
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-bold text-gray-900 dark:text-white">
-                      Total
+                      Book hotel now, At price
+                      <p className="text-white font-normal ">Excluding GST</p>
                     </dt>
-                    <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      Rs {total}.00
+
+                    <dd className="text-base font-bold text-green-500 dark:text-green-500">
+                      Rs {total - 1000 * differenceInDays}.00
                     </dd>
                   </dl>
                 </div>
@@ -401,12 +406,12 @@ const Checkout = () => {
                 <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
                   Payment Policies
                   <Link
-                    to="/"
+                    to="/PrivacyCookiesPolicy"
                     className="font-medium text-primary-700 underline hover:no-underline dark:text-primary-500"
                     href="#"
                     title=""
                   >
-                    Safe and Secure
+                    <span className="ps-3 "> Safe and Secure</span>
                   </Link>
                   .
                 </p>

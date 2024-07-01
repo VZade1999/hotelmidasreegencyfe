@@ -31,7 +31,6 @@ const Login = () => {
           email: email,
           password: password,
         });
-        console.log("login response", loginResponse);
         if (loginResponse.loginResult.status) {
           navigate("/bookroom");
           Cookies.set("Bearer", loginResponse.loginResult.message);

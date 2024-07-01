@@ -41,7 +41,6 @@ try{
     endDate: endDate
   })
   dispatch(setRoomData(roomCheckResponse.roomCheckRespone))
-  console.log('999',roomCheckResponse.roomCheckRespone);
 
 
 }catch(error){

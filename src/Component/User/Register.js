@@ -34,7 +34,6 @@ const Register = () => {
         const otpResponse = await PostApi(`/generateotp`, {
           email: email,
         });
-        console.log(otpResponse);
         if (
           otpResponse.message ===
           "Email address is already register"
