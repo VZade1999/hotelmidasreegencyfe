@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setCheckInDate, setCheckOutDate, setRoomData } from "./../Redux/Sclice";
 import './custom.css'
 import { PostApi } from '../Api/api';
+import { Watch } from "react-loader-spinner";
 
 
 const Checkavailability = () => {

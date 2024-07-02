@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { PostApi } from "../Api/api";
+import { Watch } from "react-loader-spinner";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ const Checkout = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const [ loader, setLoader] = useState(false);
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -81,10 +83,12 @@ const Checkout = () => {
       //           payathotel: 1000 * differenceInDays,
 
       //         });
+      setLoader(true);
       try {
         const paymentResponse = await PostApi("/roombooking", {
           total: total - 1000,
         });
+        setLoader(false);
         if (!paymentResponse.data) {
           navigate("/login");
         }
@@ -146,6 +150,16 @@ const Checkout = () => {
 
   return (
     <>
+    <Watch
+  visible={loader}
+  height="80"
+  width="80"
+  radius="48"
+  color="#0047AB"
+  ariaLabel="watch-loading"
+  wrapperStyle={{}}
+  wrapperClass=""
+  />
       <section className="bg-gray-900 py-8 antialiased dark:bg-gray-900">
         <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <ol className="items-center flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
