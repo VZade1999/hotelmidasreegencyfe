@@ -16,7 +16,7 @@ const Checkout = () => {
     phone: "",
     address: "",
   });
-  const tax = 199;
+  const tax = 0;
   const totalofRoom = room.price + tax;
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const Checkout = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const [ loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -103,7 +103,7 @@ const Checkout = () => {
               "http://localhost:3000/static/media/logo.509352b434500fd83abe.jpg",
             order_id: paymentResponse.data.orderDetails.id,
             handler: async function (response) {
-              alert("Payment successful");
+              alert("Payment successful, Please check your email");
               const data = await PostApi("/roombooked", {
                 userId: "1",
                 checkInDate: checkInDate,
@@ -150,16 +150,18 @@ const Checkout = () => {
 
   return (
     <>
-    <Watch
-  visible={loader}
-  height="80"
-  width="80"
-  radius="48"
-  color="#0047AB"
-  ariaLabel="watch-loading"
-  wrapperStyle={{}}
-  wrapperClass=""
-  />
+      {loader && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
+          <Watch
+            visible={loader}
+            height="70"
+            width="70"
+            radius="48"
+            color="#0047AB"
+            ariaLabel="watch-loading"
+          />
+        </div>
+      )}
       <section className="bg-gray-900 py-8 antialiased dark:bg-gray-900">
         <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
           <ol className="items-center flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">

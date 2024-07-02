@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PostApi } from "../Api/api";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Watch } from "react-loader-spinner";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const Login = () => {
   const [primaryTitle, setPrimaryTitle] = useState();
   const [secondaryTitle, setSecondaryTitle] = useState();
   const [isValid, SetIsValid] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,11 +28,13 @@ const Login = () => {
     e.preventDefault();
     const { email, password } = formData;
     if (email && password) {
+      setLoader(true);
       try {
         const loginResponse = await PostApi("/login", {
           email: email,
           password: password,
         });
+        setLoader(false);
         if (loginResponse.loginResult.status) {
           navigate("/bookroom");
           Cookies.set("Bearer", loginResponse.loginResult.message);
@@ -52,6 +56,19 @@ const Login = () => {
 
   return (
     <>
+
+{loader && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
+          <Watch
+            visible={loader}
+            height="70"
+            width="70"
+            radius="48"
+            color="#0047AB"
+            ariaLabel="watch-loading"
+          />
+        </div>
+      )}
       <div className="font-[sans-serif] text-[#333]">
         <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
           <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">

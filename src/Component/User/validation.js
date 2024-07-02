@@ -3,6 +3,7 @@ import { PostApi } from "../Api/api";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
+import { Watch } from "react-loader-spinner";
 
 const Validation = (props) => {
   useEffect(() => {
@@ -14,6 +15,7 @@ const Validation = (props) => {
   const [primaryTitle, setPrimaryTitle] = useState();
   const { name, email, password } = props.formData;
   const [otp, setOtp] = useState();
+  const [loader, setLoader] = useState(false);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -21,22 +23,26 @@ const Validation = (props) => {
   };
 
   const handleValidate = async () => {
+    setLoader(true);
     try {
       const validateOtpResponse = await PostApi("/validateotp", {
         email: email,
         otp: otp,
       });
+      setLoader(false);
       if (!validateOtpResponse.valid) {
         setPrimaryTitle(validateOtpResponse.message);
         SetIsValid(false);
       }
       if (validateOtpResponse.valid) {
+        setLoader(true);
         try {
           const registerResponse = await PostApi("/register", {
             name: name,
             email: email,
             password: password,
           });
+          setLoader(false);
           if (registerResponse.valid) {
             navigate("/login");
           }
@@ -51,6 +57,18 @@ const Validation = (props) => {
 
   return (
     <>
+    {loader && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
+          <Watch
+            visible={loader}
+            height="70"
+            width="70"
+            radius="48"
+            color="#0047AB"
+            ariaLabel="watch-loading"
+          />
+        </div>
+      )}
       <Toaster position="top-center" reverseOrder={true} />
       <div class="font-[sans-serif] text-gray-800 bg-white max-w-4xl flex items-center mx-auto md:h-screen p-4">
         <div class="grid md:grid-cols-3 items-center shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-xl overflow-hidden">

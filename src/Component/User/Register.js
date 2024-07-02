@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Validation from "./validation"; // Make sure to import your Validation component
 import { PostApi } from "../Api/api";
+import { Watch } from "react-loader-spinner";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,18 +23,19 @@ const Register = () => {
       [name]: type === "checkbox" ? checked : value,
     });
   };
+  const [loader, setLoader] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password, rememberMe } = formData;
 
-    // Basic validation
     if (name && email && password && rememberMe) {
-      // If validation passes, set isSubmitted to true to render the Validation component
+      setLoader(true);
       try {
         const otpResponse = await PostApi(`/generateotp`, {
           email: email,
         });
+        setLoader(false);
         if (
           otpResponse.message ===
           "Email address is already register"
@@ -62,6 +64,18 @@ const Register = () => {
 
   return (
     <>
+     {loader && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
+          <Watch
+            visible={loader}
+            height="70"
+            width="70"
+            radius="48"
+            color="#0047AB"
+            ariaLabel="watch-loading"
+          />
+        </div>
+      )}
       {!isSubmitted && (
         <div className="font-[sans-serif] text-gray-800 bg-white max-w-4xl flex items-center mx-auto md:h-screen p-4">
           <div className="grid md:grid-cols-3 items-center shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-xl overflow-hidden">
