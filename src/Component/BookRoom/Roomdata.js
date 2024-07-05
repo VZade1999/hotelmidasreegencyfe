@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import AcRoom from "../../Assets/Images/ac_room.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { roomId } from "./../Redux/Sclice";
 import Cookies from "js-cookie";
 import { PostApi } from "../Api/api";
-
+import SimpleImageSlider from "react-simple-image-slider";
 
 const Roomdata = (props) => {
   const navigate = useNavigate();
@@ -30,10 +30,37 @@ const Roomdata = (props) => {
       navigate("/login");
     }
   };
+  const sliderImages = [
+    {
+      url: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/c8/3a/ee/getlstd-property-photo.jpg?w=700&h=-1&s=1",
+    },
+    {
+      url: "https://images.oyoroomscdn.com/uploads/hotel_image/175960/medium/e09f34ce5921afaa.jpg",
+    },
+    {
+      url: "https://images.oyoroomscdn.com/uploads/hotel_image/51730/xlarge/988bda7c6b98a717.jpg",
+    },
+    {
+      url: "https://www.marmomac.com/wp-content/uploads/2020/12/Ritz-Carlton-bathroom-1.jpeg",
+    },
+    {
+      url: "https://static.dezeen.com/uploads/2022/01/hotel-bathrooms-lookbook-dezeen_2364_col_hero.gif",
+    },
+  ];
   return (
     <>
       <div className="w-full max-w-sm bg-gray-900 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700 m-2">
-        <img className="p-8 rounded-t-lg" src={AcRoom} alt="product" />
+        <div className="p-8 rounded-t-lg">
+        <SimpleImageSlider
+            width={320}
+            height={200}
+            images={sliderImages}
+            showBullets={false}
+            showNavs={true}
+            autoPlay={true} 
+               autoPlayDelay = {4}
+         />
+        </div>
 
         <div className="px-5 pb-5">
           <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
