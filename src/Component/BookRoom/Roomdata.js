@@ -30,23 +30,7 @@ const Roomdata = (props) => {
       navigate("/login");
     }
   };
-  const sliderImages = [
-    {
-      url: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/c8/3a/ee/getlstd-property-photo.jpg?w=700&h=-1&s=1",
-    },
-    {
-      url: "https://images.oyoroomscdn.com/uploads/hotel_image/175960/medium/e09f34ce5921afaa.jpg",
-    },
-    {
-      url: "https://images.oyoroomscdn.com/uploads/hotel_image/51730/xlarge/988bda7c6b98a717.jpg",
-    },
-    {
-      url: "https://www.marmomac.com/wp-content/uploads/2020/12/Ritz-Carlton-bathroom-1.jpeg",
-    },
-    {
-      url: "https://static.dezeen.com/uploads/2022/01/hotel-bathrooms-lookbook-dezeen_2364_col_hero.gif",
-    },
-  ];
+
   const sliderImages = [
     {
       url: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/c8/3a/ee/getlstd-property-photo.jpg?w=700&h=-1&s=1",
