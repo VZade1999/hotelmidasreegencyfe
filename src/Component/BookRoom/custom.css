@@ -1,16 +1,22 @@
 
 
 
-.checkInInput{
+/* .checkInInput{
     height: 60px;
     width: 400px;
 }
+@media (max-width: 767px) {
+  .checkInInput {
+    width: 350px;
+  }
+} */
 
-.banner{
+
+/* .banner{
     height: 120px;
 }
 @media (max-width: 767px) {
     .banner {
       height: 320px;
     }
-  }
+  } */

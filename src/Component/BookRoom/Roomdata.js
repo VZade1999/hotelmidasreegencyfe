@@ -50,10 +50,10 @@ const Roomdata = (props) => {
   return (
     <>
       <div className="w-full max-w-sm bg-gray-900 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700 m-2">
-        <div className="p-8 rounded-t-lg">
+        <div className=" flex justify-center items-center m-5">
         <SimpleImageSlider
-            width={320}
-            height={200}
+            width={window.innerWidth <= 640? 280:300}
+            height={window.innerWidth <= 640? 150: 200}
             images={sliderImages}
             showBullets={false}
             showNavs={true}

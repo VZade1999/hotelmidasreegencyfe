@@ -54,60 +54,61 @@ const Checkavailability = () => {
   };
 
   return (
+    <>
+      {loader && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
+          <Watch
+            visible={loader}
+            height="70"
+            width="70"
+            radius="48"
+            color="#0047AB"
+            ariaLabel="watch-loading"
+          />
+        </div>
+      )}
+      <div className="md:flex md:justify-around md:ps-0 ps-5 py-5 bg-gray-900">
+          <div className="md:flex">
+            <div className="text-white py-3 md:px-5">Check-In</div>
+            <DatePicker
+              selected={startDate}
+              onChange={handleChangeStartDate}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              minDate={getCurrentDate()}
+              className="bg-gray-50 border w-50 checkInInput border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 px-4 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+              placeholderText="Check-in date"
+            />
+          </div>
+          <div className="md:flex ">
+            <div className="text-white py-3 md:px-5 ">Check-Out</div>
+            <DatePicker
+              selected={endDate}
+              onChange={handleChangeEndDate}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={
+                startDate
+                  ? new Date(startDate.getTime() + 86400000)
+                  : getCurrentDate()
+              }
+              className="bg-gray-50 border checkInInput border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 px-4 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full"
+              placeholderText="Check-out date"
+            />
+          </div>
+          <div className="md:flex ">
+            <div className="py-3 md:px-5"></div>
+            <button style={{width:'240px'}}
+              className="bg-gray-50 checkInInput border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 py-2 dark:bg-blue-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full md:px-5"
+              onClick={handleCheckRoom}
+            >
+              Check Rooms
+            </button>
+          </div>
+      </div>
 
-  <>
-    {loader && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70">
-        <Watch
-          visible={loader}
-          height="70"
-          width="70"
-          radius="48"
-          color="#0047AB"
-          ariaLabel="watch-loading"
-        />
-      </div>
-    )}
-    <div className="flex p-5 justify-center banner dark:bg-gray-900 ps-5 container ">
-      <div className="flex flex-col justify-around md:flex-row items-around space-y-4 md:space-y-0 md:space-x-4 w-full row ">
-        <div>
-          <span className="text-white me-5">Check-In</span>
-          <DatePicker
-            selected={startDate}
-            onChange={handleChangeStartDate}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            minDate={getCurrentDate()}
-            className="bg-gray-50 border checkInInput border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 px-4 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full"
-            placeholderText="Check-in date"
-          />
-        </div>
-        <div>
-          <span className="text-white me-5 md:px-5">Check-Out</span>
-          <DatePicker
-            selected={endDate}
-            onChange={handleChangeEndDate}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={
-              startDate
-                ? new Date(startDate.getTime() + 86400000)
-                : getCurrentDate()
-            }
-            className="bg-gray-50 border checkInInput border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 px-4 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full"
-            placeholderText="Check-out date"
-          />
-        </div>
-        <button
-          className="bg-gray-50 checkInInput border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 py-2 dark:bg-blue-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-40"
-          onClick={handleCheckRoom}
-        >
-          Check Rooms
-        </button>
-      </div>
-    </div>
     </>
   );
 };
