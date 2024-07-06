@@ -4,8 +4,11 @@ import { PostApi } from "../Api/api";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { Watch } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
+import { userData} from "./../Redux/userSclice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -36,6 +39,7 @@ const Login = () => {
         });
         setLoader(false);
         if (loginResponse.loginResult.status) {
+          dispatch(userData(loginResponse.loginResult.status));
           navigate("/bookroom");
           Cookies.set("Bearer", loginResponse.loginResult.message);
         } else if (!loginResponse.loginResult.status) {

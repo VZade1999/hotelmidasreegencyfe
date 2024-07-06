@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { roomId } from "./../Redux/Sclice";
@@ -10,7 +9,6 @@ import SimpleImageSlider from "react-simple-image-slider";
 const Roomdata = (props) => {
   const navigate = useNavigate();
   // const count = useSelector((state) => state.roomdata.value);
-  console.log(props);
   const dispatch = useDispatch();
   const Bearer = Cookies.get("Bearer");
   const handleRoomBook = () => {

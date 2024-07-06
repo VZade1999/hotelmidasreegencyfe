@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import Sclice from './Sclice'
+import roomData from './Sclice'
+import userData from './userSclice';
 
 export default configureStore({
   reducer: {
-    roomdata: Sclice,
+    roomdata: roomData,
+    userdata: userData,
   },
 })

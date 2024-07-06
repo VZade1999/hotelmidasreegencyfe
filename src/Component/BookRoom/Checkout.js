@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { PostApi } from "../Api/api";
 import { Watch } from "react-loader-spinner";
 
+
 const Checkout = () => {
   const navigate = useNavigate();
   const roomData = useSelector((state) => state.roomdata.roomData);
@@ -20,6 +21,8 @@ const Checkout = () => {
   const totalofRoom = room.price + tax;
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
@@ -37,10 +40,7 @@ const Checkout = () => {
   const originalDateStringForCheckOut = useSelector(
     (state) => state.roomdata.checkOutDate
   );
-  console.log(
-    "out date",
-    useSelector((state) => state.roomdata.checkOutDate)
-  );
+
   // Ensure originalDateStringForCheckIn is a valid date object
   const checkInDateObject = new Date(originalDateStringForCheckIn);
   const checkOutDateObject = new Date(originalDateStringForCheckOut); // Convert date to a string format
@@ -144,6 +144,7 @@ const Checkout = () => {
         console.log(error);
       }
     } else {
+      window.scrollTo(0, 0)
       setError(true);
     }
   };
@@ -243,8 +244,7 @@ const Checkout = () => {
                     className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
                     role="alert"
                   >
-                    <span class="font-medium">Required!</span> All below fields
-                    are required.
+                    <span class="font-medium">Required!</span> Please Fill booking form
                   </div>
                 )}
 
